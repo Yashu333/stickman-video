@@ -1,4 +1,4 @@
-import {INK, PAPER} from '../theme';
+import {usePalette} from '../components/Scene';
 import {BODY, getJoints, type Point, type Pose} from './pose';
 
 export type Face = 'none' | 'asleep' | 'neutral' | 'sad' | 'happy' | 'surprised';
@@ -18,6 +18,7 @@ const toPoints = (...points: Point[]) =>
   points.map((point) => `${point.x},${point.y}`).join(' ');
 
 const FaceMarks = ({face, gaze}: {face: Face; gaze: number}) => {
+  const {ink} = usePalette();
   if (face === 'none') {
     return null;
   }
@@ -32,8 +33,8 @@ const FaceMarks = ({face, gaze}: {face: Face; gaze: number}) => {
       </>
     ) : (
       <>
-        <circle cx={leftEye} cy={-7} r={5} fill={INK} stroke="none" />
-        <circle cx={rightEye} cy={-7} r={5} fill={INK} stroke="none" />
+        <circle cx={leftEye} cy={-7} r={5} fill={ink} stroke="none" />
+        <circle cx={rightEye} cy={-7} r={5} fill={ink} stroke="none" />
       </>
     );
 
@@ -65,12 +66,13 @@ export const Stickman = ({
   gaze = 0,
 }: StickmanProps) => {
   const joints = getJoints(pose);
+  const {ink, paper} = usePalette();
 
   return (
     <g
       transform={`translate(${x} ${y}) scale(${scale})`}
       fill="none"
-      stroke={INK}
+      stroke={ink}
       strokeWidth={BODY.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -91,7 +93,7 @@ export const Stickman = ({
         cx={joints.head.x}
         cy={joints.head.y}
         r={BODY.headRadius}
-        fill={PAPER}
+        fill={paper}
       />
       <g
         transform={`translate(${joints.head.x} ${joints.head.y}) rotate(${pose.head})`}

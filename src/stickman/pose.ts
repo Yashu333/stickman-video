@@ -37,7 +37,7 @@ export const BODY = {
   lowerArm: 78,
   thigh: 100,
   shin: 100,
-  stroke: 14,
+  stroke: 17,
 };
 
 const toRadians = (degrees: number) => (degrees * Math.PI) / 180;

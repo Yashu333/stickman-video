@@ -113,6 +113,23 @@ export const leaping: Pose = {
   rightLeg: {upper: 38, lower: -14},
 };
 
+/** One moment of a walk to the right. Advance `phase` steadily to keep walking. */
+export const walking = (phase: number): Pose => {
+  const swing = Math.sin(phase);
+  const leftLift = Math.max(0, -Math.cos(phase)) * 38;
+  const rightLift = Math.max(0, Math.cos(phase)) * 38;
+  return {
+    torso: 5,
+    head: 7,
+    shoulderWidth: 8,
+    shoulderDrop: 4,
+    leftArm: {upper: -swing * 30, lower: -swing * 30 + 20},
+    rightArm: {upper: swing * 30, lower: swing * 30 + 20},
+    leftLeg: {upper: swing * 30, lower: swing * 30 - leftLift},
+    rightLeg: {upper: -swing * 30, lower: -swing * 30 - rightLift},
+  };
+};
+
 export const celebrating: Pose = {
   ...leaping,
   leftLeg: {upper: -13, lower: -8},

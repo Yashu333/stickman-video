@@ -1,55 +1,52 @@
-import {Easing, interpolate, useCurrentFrame, useVideoConfig} from 'remotion';
-import {Scene} from '../components/Scene';
-import {ACCENT, FONT_FAMILY, INK} from '../theme';
+import {interpolate, useCurrentFrame} from 'remotion';
+import {Headline, Slam} from '../components/Caption';
+import {Stage} from '../components/Scene';
+import {hipYOnFloor} from '../stickman/pose';
+import {walking} from '../stickman/poses';
+import {Stickman} from '../stickman/Stickman';
+import {NIGHT, RED, WHITE} from '../theme';
+
+const GROUND = 1490;
+const WALKER_SCALE = 0.62;
 
 export const EndCard = () => {
   const frame = useCurrentFrame();
-  const {fps} = useVideoConfig();
-
-  const ease = {
+  const pose = walking(frame * 0.34);
+  const hipY = hipYOnFloor(pose, GROUND, WALKER_SCALE);
+  const walkerX = interpolate(frame, [18, 119], [90, 930], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
-    easing: Easing.bezier(0.16, 1, 0.3, 1),
-  } as const;
+  });
 
   return (
-    <Scene
-      duration={4 * fps}
-      fadeIn={false}
-      fadeOut={false}
+    <Stage
+      palette={NIGHT}
       overlay={
-        <div
-          style={{
-            position: 'absolute',
-            top: 700,
-            left: 80,
-            right: 80,
-            textAlign: 'center',
-            fontFamily: FONT_FAMILY,
-            fontWeight: 700,
-            fontSize: 172,
-            lineHeight: 1.04,
-            letterSpacing: '-0.02em',
-            color: INK,
-            opacity: interpolate(frame, [4, 14], [0, 1], ease),
-            translate: `0px ${interpolate(frame, [4, 26], [60, 0], ease)}px`,
-          }}
-        >
-          Don’t stop
+        <Headline top={430} fontSize={208} color={WHITE} align="left">
+          <Slam at={4} style={{transformOrigin: 'left center'}}>Don’t</Slam>
           <br />
-          applying.
-          <div
-            style={{
-              height: 20,
-              marginTop: 34,
-              borderRadius: 10,
-              backgroundColor: ACCENT,
-              transformOrigin: 'left center',
-              scale: `${interpolate(frame, [20, 48], [0, 1], ease)} 1`,
-            }}
-          />
-        </div>
+          <Slam at={13} style={{transformOrigin: 'left center'}}>stop</Slam>
+          <br />
+          <Slam at={22} style={{color: RED, transformOrigin: 'left center'}}>applying.</Slam>
+        </Headline>
       }
-    />
+    >
+      <line
+        x1={-20}
+        y1={GROUND}
+        x2={1100}
+        y2={GROUND}
+        stroke={WHITE}
+        strokeWidth={10}
+      />
+      <Stickman
+        x={walkerX}
+        y={hipY}
+        scale={WALKER_SCALE}
+        pose={pose}
+        face="happy"
+        gaze={12}
+      />
+    </Stage>
   );
 };

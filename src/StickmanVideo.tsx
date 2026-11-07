@@ -1,5 +1,4 @@
 import {AbsoluteFill, Sequence, useVideoConfig} from 'remotion';
-import {PAPER} from './theme';
 import {EndCard} from './scenes/EndCard';
 import {NoReplies} from './scenes/NoReplies';
 import {Offer} from './scenes/Offer';
@@ -10,7 +9,7 @@ export const StickmanVideo = () => {
   const {fps} = useVideoConfig();
 
   return (
-    <AbsoluteFill style={{backgroundColor: PAPER}}>
+    <AbsoluteFill>
       <Sequence name="Wake up" from={0} durationInFrames={5 * fps}>
         <WakeUp />
       </Sequence>
